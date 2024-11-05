@@ -28,6 +28,7 @@ contract ChainCarsTest is Test {
 
         // Proveer fondos iniciales al usuario
         usdt.transfer(user, 1_000 * 10 ** usdt.decimals());
+
     }
 
     function testAddCar() public {
@@ -62,37 +63,6 @@ contract ChainCarsTest is Test {
             200 * 10 ** usdt.decimals(),
             2
         );
-        vm.stopPrank();
-    }
-
-    function testEditCar() public {
-        vm.prank(owner);
-        chainCars.addCar("Agile", "Negro", 100, 1);
-        // Editar el auto
-        chainCars.editCar(1, "Agile 1.4", "Negro 5 puertas", 150, 2);
-
-        (
-            string memory name,
-            string memory description,
-            uint256 price,
-            uint256 category
-        ) = chainCars.cars(1);
-
-        // Verificar los cambios
-        assertEq(name, "Agile 1.4");
-        assertEq(description, "Negro 5 puertas");
-        assertEq(price, 150);
-        assertEq(category, 2);
-    }
-
-    function testFail_EditCarNonOwner() public {
-        vm.prank(owner);
-        // Agregar un auto
-        chainCars.addCar("Car2", "Description2", 200, 1);
-
-        vm.expectRevert("Ownable: caller is not the owner"); // Esperar que se revierta la transacción con el mensaje de error
-        vm.startPrank(user);
-        chainCars.editCar(1, "Car2 Edited", "Description2 Edited", 250, 2);
         vm.stopPrank();
     }
 

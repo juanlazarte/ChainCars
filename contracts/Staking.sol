@@ -4,7 +4,7 @@ pragma solidity 0.8.23;
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./ChainCars.sol";
+import "../contracts/ChainCars.sol";
 
 contract StakingChainCars is Ownable {
     ChainCars public CC;
@@ -16,14 +16,14 @@ contract StakingChainCars is Ownable {
         uint256 timestamp;
         uint256 lastClaim;
         uint256 apy;
-        uint256 price;
+        uint256 price;    
         bool unstaked;
     }
 
     struct StakingTier {
         uint256 category;
-        uint256 apy;
-        uint256 price;
+        uint256 apy; 
+        uint256 price;     
     }
 
     mapping(uint256 => StakingTier) public stakingTiers;
@@ -39,12 +39,7 @@ contract StakingChainCars is Ownable {
         USDT = _USDT;
     }
 
-    function addStakingTier(
-        uint256 _category,
-        uint256 _apy,
-        uint256 _price
-    ) external onlyOwner {
-        require(_category <= 4, "Category does not exist");
+    function addStakingTier(uint256 _category, uint256 _apy, uint256 _price) external onlyOwner {
         stakingTiers[_category] = StakingTier({
             category: _category,
             apy: _apy,
@@ -56,10 +51,7 @@ contract StakingChainCars is Ownable {
 
     function stake(uint256 _tokenId, uint256 _amount) external {
         require(stakingTiers[_tokenId].apy > 0, "Staking tier not found");
-        require(
-            CC.balanceOf(msg.sender, _tokenId) >= _amount,
-            "Not enough tokens"
-        );
+        require(CC.balanceOf(msg.sender, _tokenId) >= _amount, "Not enough tokens");
 
         CC.safeTransferFrom(msg.sender, address(this), _tokenId, _amount, "");
 
@@ -67,17 +59,15 @@ contract StakingChainCars is Ownable {
 
         StakingTier memory tier = stakingTiers[category];
 
-        stakingBalances[msg.sender].push(
-            StakingInfo({
-                tokenId: _tokenId,
-                amount: _amount,
-                timestamp: block.timestamp,
-                lastClaim: block.timestamp,
-                apy: tier.apy,
-                price: tier.price,
-                unstaked: false
-            })
-        );
+        stakingBalances[msg.sender].push(StakingInfo({
+            tokenId: _tokenId,
+            amount: _amount,
+            timestamp: block.timestamp,
+            lastClaim: block.timestamp,
+            apy: tier.apy,
+            price: tier.price,
+            unstaked: false
+        }));
 
         emit Staked(msg.sender, _tokenId, _amount);
     }
@@ -85,20 +75,14 @@ contract StakingChainCars is Ownable {
     function claimRewards(uint256 _index) external {
         StakingInfo storage info = stakingBalances[msg.sender][_index];
         require(!info.unstaked, "Tokens unstaked");
-        require(
-            block.timestamp >= info.lastClaim + 7 days,
-            "Rewards can be claimed once a week"
-        );
+        require(block.timestamp >= info.lastClaim + 7 days, "Rewards can be claimed once a week");
 
         uint256 rewards = calculateRewards(msg.sender, _index);
         require(rewards > 0, "No rewards available");
 
         info.lastClaim = block.timestamp;
 
-        require(
-            USDT.balanceOf(address(this)) >= rewards,
-            "Insufficient USDT in contract"
-        );
+        require(USDT.balanceOf(address(this)) >= rewards, "Insufficient USDT in contract");
         require(USDT.transfer(msg.sender, rewards), "Reward transfer failed");
 
         emit RewardClaimed(msg.sender, info.tokenId, rewards);
@@ -113,45 +97,27 @@ contract StakingChainCars is Ownable {
         uint256 rewards = calculateRewards(msg.sender, _index);
         uint256 amount = info.amount;
 
-        CC.safeTransferFrom(
-            address(this),
-            msg.sender,
-            info.tokenId,
-            amount,
-            ""
-        );
+        CC.safeTransferFrom(address(this), msg.sender, info.tokenId, amount, "");
 
         if (rewards > 0) {
-            require(
-                USDT.balanceOf(address(this)) >= rewards,
-                "Insufficient USDT in contract"
-            );
-            require(
-                USDT.transfer(msg.sender, rewards),
-                "Reward transfer failed"
-            );
+            require(USDT.balanceOf(address(this)) >= rewards, "Insufficient USDT in contract");
+            require(USDT.transfer(msg.sender, rewards), "Reward transfer failed");
         }
 
         emit Unstaked(msg.sender, info.tokenId, amount);
     }
 
-    function calculateRewards(
-        address _user,
-        uint256 _index
-    ) public view returns (uint256) {
+    function calculateRewards(address _user, uint256 _index) public view returns (uint256) {
         StakingInfo storage info = stakingBalances[_user][_index];
 
         uint256 timeElapsed = block.timestamp - info.lastClaim;
 
-        uint256 rewards = (info.price * info.amount * info.apy * timeElapsed) /
-            (100 * 365 days); // Calculated in days
+        uint256 rewards = (info.price * info.amount * info.apy * timeElapsed) / (100 * 365 days);
 
         return rewards;
     }
 
-    function getStakingsPerAddress(
-        address _address
-    ) external view returns (StakingInfo[] memory) {
+    function getStakingsPerAddress(address _address) external view returns (StakingInfo[] memory) {
         return stakingBalances[_address];
     }
 
@@ -183,10 +149,7 @@ contract StakingChainCars is Ownable {
     }
 
     function withdrawUSDT(uint256 _amount) external onlyOwner {
-        require(
-            USDT.balanceOf(address(this)) >= _amount,
-            "Insufficient USDT balance"
-        );
+        require(USDT.balanceOf(address(this)) >= _amount, "Insufficient USDT balance");
         require(USDT.transfer(msg.sender, _amount), "Transfer failed");
     }
 }
