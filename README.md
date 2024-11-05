@@ -36,8 +36,19 @@ El proceso ChainCars abarca un modelo de negocio basado en la tokenización de a
 ### Contacto
 Para consultas, soporte o interés en colaborar en el proyecto ChainCars, puedes contactarnos a través de los siguientes medios:
 
-- **Email**: [contacto@chaincars.io](chaincarsar@gmai.com)
+- **Email**: [contacto@chaincars.io](chaincarsar@gmail.com)
 - **Website**: [www.chaincars.io](https://chaincars.vercel.app/)
+---
+
+### Documentación
+Modelado de Contratos, Modelo de negocios, One Pager, Presentación
+
+- [Modelado de Contratos](https://drive.google.com/file/d/1w2jLkNThum01n_gLZPh2RmF8PqudGU6r/view?usp=drive_link)
+- [Modelo de negocios](https://drive.google.com/file/d/1XMidSsy9L8c9IdfG_-G9IIopWpOLFdhJ/view?usp=drive_linkf)
+- [One Pager](https://drive.google.com/file/d/1c5Vonj4VE6pkwM6Yx4BZ1gEFxza9q9Yc/view?usp=drive_link)
+- [Presentación](https://drive.google.com/file/d/1LCPpJ7V2xS4yiNom0-RWeEUdfaWGrd2J/view?usp=drive_link)
+
+
 ---
 
 ---
