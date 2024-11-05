@@ -1,5 +1,5 @@
 # ChainCars 🚗🔗
-**Propiedad y Monetización de Autos mediante NFTs en Blockchain**
+**Tokenización de Autos mediante NFTs en Blockchain**
 
 ## Tabla de Contenidos
 1. [Descripción del Proyecto](#descripción-del-proyecto)
@@ -12,7 +12,7 @@
 ---
 
 ### Descripción del Proyecto
-ChainCars es una plataforma basada en blockchain que permite la propiedad y monetización de vehículos a través de NFTs (Tokens No Fungibles). Los usuarios pueden adquirir, intercambiar y generar recompensas con autos tokenizados en un ecosistema descentralizado y seguro.
+El proceso ChainCars abarca un modelo de negocio basado en la tokenización de autos y el uso de tecnología blockchain para rentabilizar inversiones a través de la compra, staking y distribución de recompensas en tokens.
 
 ### Funcionalidades Clave
 - **Tokenización de Autos**: Convertir vehículos en activos digitales mediante NFTs.
