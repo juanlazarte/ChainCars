@@ -25,11 +25,16 @@ contract ChainCars is ERC1155, Ownable {
     uint256 public totalCars;
     uint256 public MAXSUPPLY = 100;
 
-    constructor(address _USDT) ERC1155("") Ownable(msg.sender) {
+    constructor(address _USDT) ERC1155("https://ipfs.io/ipfs/QmeCehCLYadg1rSaU8uWsxbgzphjUuZBGDXjmubPvXeVbi/{id}.json") Ownable(msg.sender) {
         name = "ChainCars";
         symbol = "CC";
         USDT = IERC20(_USDT);
         totalCars = 0;
+    }
+
+    function uri(uint256 _tokenId) public view override returns(string memory){
+        require(exists(_tokenId), "URI: id doesn't exist");
+        return string(abi.encodePacked(super.uri(_tokenId), Strings.toString(_tokenId) ,".json"));
     }
 
     function addCar(string memory _name, string memory _description, uint256 _price, uint256 _category) public onlyOwner {
