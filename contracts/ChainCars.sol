@@ -44,8 +44,8 @@ contract ChainCars is ERC1155, Ownable {
 
     function mintCar(uint256 _carId, uint256 _amount) public {
         require(_carId <= totalCars, "Car ID does not exist");
-        require(_carId < 0, "Car ID does not exist");
-        require(totalMinted[_carId] + 1 < MAXSUPPLY, "Sale has ended");
+        require(_carId > 0, "Car ID does not exist");
+        require(totalMinted[_carId] + _amount < MAXSUPPLY, "Sale has ended");
         
         Car memory car = cars[_carId];
 
